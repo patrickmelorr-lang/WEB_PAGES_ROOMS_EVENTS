@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local de Eventos - Celebraciones Inolvidables</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #f5f5f5;
+            --bg-card: #ffffff;
+            --bg-header: #ffffff;
+            --text-main: #333333;
+            --text-secondary: #555555;
+            --color-primary: #D81B60;
+            --border-color: #eee;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --btn-toggle-bg: #333;
+            --btn-toggle-text: #fff;
+        }
+
+        body.dark-mode {
+            --bg-body: #121212;
+            --bg-card: #1E1E1E;
+            --bg-header: #1E1E1E;
+            --text-main: #E0E0E0;
+            --text-secondary: #B0B0B0;
+            --color-primary: #FF4081;
+            --border-color: #333;
+            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --btn-toggle-bg: #fff;
+            --btn-toggle-text: #333;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        a { text-decoration: none; }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--btn-toggle-bg);
+            color: var(--btn-toggle-text);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        header {
+            background-color: var(--bg-header);
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-bottom: 3px solid var(--color-primary);
+            margin-bottom: 40px;
+            transition: background-color 0.3s ease;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .info-card, .text-box {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 50px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .info-card { text-align: center; }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .btn-map {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 50px;
+            margin-top: 15px;
+            font-weight: 600;
+            transition: opacity 0.3s;
+        }
+        .btn-map:hover { opacity: 0.9; }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+            align-items: center;
+        }
+
+        /* Contenedor multimedia */
+        .media-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* --- MODIFICADO: Formato 16:9 para todos los medios --- */
+        .media-box {
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            width: 100%;
+            aspect-ratio: 16 / 9; /* Cambiado a 16:9 */
+            position: relative;
+        }
+
+        /* Clase opcional para imágenes verticales si las necesitas */
+        .media-box.vertical {
+            aspect-ratio: 9 / 16;
+            max-width: 340px;
+        }
+
+        /* Clase para imágenes cuadradas */
+        .media-box.square {
+            aspect-ratio: 1 / 1;
+        }
+
+        .media-box video, .media-box img {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Para imágenes que deben mostrarse completas sin recortar */
+        .media-box img.contain {
+            object-fit: contain;
+            background-color: var(--bg-card);
+        }
+
+        .yt-link {
+            display: inline-block;
+            text-align: center;
+            background: var(--bg-card);
+            color: var(--color-primary);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 2px solid var(--color-primary);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            max-width: 300px;
+            width: 100%;
+        }
+        
+        .yt-link:hover {
+            background: var(--color-primary);
+            color: #fff;
+        }
+
+        .text-box {
+            border-left: 5px solid var(--color-primary);
+            height: auto;
+            min-height: 400px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .text-box h3 {
+            color: var(--color-primary);
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .text-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .text-box li {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #111;
+            color: #888;
+            margin-top: 40px;
+        }
+
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            .content-grid { 
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .media-box {
+                aspect-ratio: 16 / 9; /* Mantiene 16:9 en móvil */
+                max-width: 100%;
+                width: 100%;
+            }
+            
+            /* Opcional: en móvil muy pequeño, puedes ajustar a un aspect ratio más cuadrado */
+            @media (max-width: 480px) {
+                .media-box {
+                    aspect-ratio: 4 / 3; /* Opción más adaptable para pantallas muy pequeñas */
+                }
+            }
+            
+            header h1 { font-size: 1.8rem; }
+            .theme-toggle { 
+                top: 10px; 
+                right: 10px;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .text-box {
+                min-height: auto;
+                padding: 20px;
+            }
+            
+            .yt-link {
+                max-width: 100%;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Modo Oscuro</button>
+
+    <header>
+        <div class="container">
+            <h1>Local de Eventos</h1>
+            <p>Elegancia y comodidad para tu gran día</p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <section class="info-card">
+            <h2 style="color: var(--color-primary);">📍 Ubicación y Contacto</h2>
+            <p><strong>DIRECCIÓN:</strong> Av. San Felipe con Condorcanqui</p>
+            <p>👀 <strong>Referencia:</strong> Caseta de Serenazgo</p>
+            
+            <a href="https://www.google.com/maps/search/Av.+San+Felipe+con+Condorcanqui" target="_blank" class="btn-map">
+                🗺️ Ver en Google Maps
+            </a>
+
+            <div style="margin-top: 25px;">
+                <p>📞 <strong>Información y Reservas:</strong></p>
+                <span style="font-size: 1.5rem; color: var(--color-primary); font-weight: bold;">912 074 874</span>
+            </div>
+        </section>
+
+        <div>
+            <h2 class="section-title">🎉 Eventos Anteriores</h2>
+            <p class="section-subtitle">Galería de Celebraciones</p>
+        </div>
+
+        <section class="content-grid">
+            <div class="media-container">
+                <div class="media-box">
+                    <video controls>
+                        <source src="video_1.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de video.
+                    </video>
+                </div>
+                <a href="https://youtube.com/shorts/GNckkwHV7DA?feature=share" target="_blank" class="yt-link">
+                    📱 Ver en YouTube Shorts
+                </a>
+            </div>
+
+            <div class="media-container">
+                <div class="media-box">
+                    <img src="caetana_1.jpeg" 
+                         alt="Fotografía de evento" 
+                         loading="lazy"
+                         class="contain"> <!-- Agregada clase para mostrar imagen completa -->
+                </div>
+            </div>
+        </section>
+
+        <div>
+            <h2 class="section-title">🏢 Nuestro Local</h2>
+            <p class="section-subtitle">Espacios diseñados para tu comodidad</p>
+        </div>
+
+        <section class="content-grid">
+            <div class="media-container">
+                <div class="media-box">
+                    <video controls>
+                        <source src="video_2.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de video.
+                    </video>
+                </div>
+                <a href="https://youtube.com/shorts/0hteuLl9EyA?feature=share" target="_blank" class="yt-link">
+                    📱 Ver en YouTube Shorts
+                </a>
+            </div>
+
+            <div class="text-box">
+                <h3>Además ofrecemos:</h3>
+                <ul>
+                    <li>🪑 <strong>Sillas y Mesas:</strong> Disponibles.</li>
+                    <li>❄️ <strong>Refrigeradora:</strong> Disponible.</li>
+                    <li>🍽️ <strong>Zona Kitchen:</strong> Área de servicio.</li>
+                    <li>✨ <strong>Ambiente:</strong> Espacioso y seguro.</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Local de Eventos. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            var body = document.body;
+            var btn = document.querySelector('.theme-toggle');
+            
+            body.classList.toggle("dark-mode");
+            
+            if (body.classList.contains("dark-mode")) {
+                btn.innerHTML = "☀️ Modo Claro";
+            } else {
+                btn.innerHTML = "🌙 Modo Oscuro";
+            }
+        }
+    </script>
+
+</body>
+</html>
