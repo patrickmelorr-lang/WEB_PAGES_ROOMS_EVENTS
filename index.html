@@ -130,6 +130,65 @@
             transition: opacity 0.3s;
         }
         .btn-map:hover { opacity: 0.9; }
+        
+        /* Estilos para el botón de WhatsApp */
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #25D366;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            margin-top: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .btn-whatsapp:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+        
+        .btn-whatsapp:active {
+            transform: translateY(0);
+        }
+        
+        .whatsapp-icon {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .phone-number {
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .contact-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+        }
 
         .content-grid {
             display: grid;
@@ -262,6 +321,18 @@
                 min-height: auto;
                 padding: 25px;
             }
+            
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            
+            .btn-map, .btn-whatsapp {
+                width: 100%;
+                max-width: 300px;
+                box-sizing: border-box;
+            }
         }
 
         @media (max-width: 480px) {
@@ -279,6 +350,10 @@
             
             .info-card, .text-box {
                 padding: 20px;
+            }
+            
+            .phone-number {
+                font-size: 1.3rem;
             }
         }
     </style>
@@ -305,9 +380,20 @@
                 🗺️ Ver en Google Maps
             </a>
 
-            <div style="margin-top: 25px;">
+            <div class="contact-info">
                 <p>📞 <strong>Información y Reservas:</strong></p>
-                <span style="font-size: 1.5rem; color: var(--color-primary); font-weight: bold;">912 074 874</span>
+                <div class="phone-number">912 074 874</div>
+                
+                <div class="contact-buttons">
+                    <a href="tel:912074874" class="btn-map">
+                        📞 Llamar ahora
+                    </a>
+                    
+                    <button class="btn-whatsapp" onclick="openWhatsApp()">
+                        <img src="image_wsp.svg" alt="WhatsApp" class="whatsapp-icon">
+                        Chatea con nosotros
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -386,6 +472,13 @@
             } else {
                 btn.innerHTML = "🌙 Modo Oscuro";
             }
+        }
+        
+        function openWhatsApp() {
+            const phoneNumber = '912074874';
+            const message = 'Hola, me gustaría obtener información sobre el local de eventos.';
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
         }
     </script>
 
